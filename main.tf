@@ -19,7 +19,7 @@ data "aws_route53_zone" "default" {
 
 resource "aws_route53_record" "default" {
   zone_id = data.aws_route53_zone.default.zone_id
-  name    = "mta-sts.${var.domain_name}"
+  name    = "mta-sts.${data.aws_route53_zone.default.name}"
   type    = "A"
 
   alias {
@@ -31,7 +31,7 @@ resource "aws_route53_record" "default" {
 
 resource "aws_route53_record" "policy" {
   zone_id = data.aws_route53_zone.default.zone_id
-  name    = "_mta-sts.${var.domain_name}"
+  name    = "_mta-sts.${data.aws_route53_zone.default.name}"
   type    = "TXT"
   ttl     = 300
 
@@ -42,7 +42,7 @@ resource "aws_route53_record" "policy" {
 
 resource "aws_route53_record" "tlsrpt" {
   zone_id = data.aws_route53_zone.default.zone_id
-  name    = "_smtp._tls.${var.domain_name}"
+  name    = "_smtp._tls.${data.aws_route53_zone.default.name}"
   type    = "TXT"
   ttl     = 300
 
@@ -54,7 +54,7 @@ resource "aws_route53_record" "tlsrpt" {
 # ACM certificate
 
 resource "aws_acm_certificate" "default" {
-  domain_name       = "mta-sts.${var.domain_name}"
+  domain_name       = "mta-sts.${data.aws_route53_zone.default.name}"
   validation_method = "DNS"
 }
 
@@ -96,7 +96,7 @@ resource "aws_cloudfront_distribution" "default" {
   enabled         = true
   is_ipv6_enabled = true
 
-  aliases = ["mta-sts.${var.domain_name}"]
+  aliases = ["mta-sts.${data.aws_route53_zone.default.name}"]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -138,7 +138,7 @@ resource "aws_cloudfront_origin_access_identity" "default" {
 # S3 bucket/file
 
 resource "aws_s3_bucket" "default" {
-  bucket = "mta-sts.${var.domain_name}"
+  bucket = "mta-sts.${data.aws_route53_zone.default.name}"
 }
 
 data "aws_iam_policy_document" "default" {
