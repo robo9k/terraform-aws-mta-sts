@@ -15,6 +15,11 @@ variable "mode" {
 variable "mx" {
   description = "Allowed MX patterns. One or more patterns matching allowed MX hosts for the Policy Domain."
   type        = list(string)
+
+  validation {
+    condition     = length(var.mx) != 0
+    error_message = "Must contain at least one MX pattern."
+  }
 }
 
 variable "max_age" {
