@@ -17,7 +17,7 @@ data "aws_route53_zone" "default" {
   name = var.domain_name
 }
 
-resource "aws_route53_record" "default" {
+resource "aws_route53_record" "a" {
   zone_id = data.aws_route53_zone.default.zone_id
   name    = "mta-sts.${data.aws_route53_zone.default.name}"
   type    = "A"
@@ -25,7 +25,19 @@ resource "aws_route53_record" "default" {
   alias {
     name                   = aws_cloudfront_distribution.default.domain_name
     zone_id                = aws_cloudfront_distribution.default.hosted_zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "aaaa" {
+  zone_id = data.aws_route53_zone.default.zone_id
+  name    = "mta-sts.${data.aws_route53_zone.default.name}"
+  type    = "AAAA"
+
+  alias {
+    name                   = aws_cloudfront_distribution.default.domain_name
+    zone_id                = aws_cloudfront_distribution.default.hosted_zone_id
+    evaluate_target_health = false
   }
 }
 
