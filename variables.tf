@@ -1,4 +1,7 @@
-variable "domain_name" {}
+variable "domain_name" {
+  description = "Name of the Route53 hosted zone."
+  type        = string
+}
 
 variable "mode" {
   description = "One of `enforce`, `testing`, or `none`, indicating the expected behavior of a Sending MTA in the case of a policy validation failure."
