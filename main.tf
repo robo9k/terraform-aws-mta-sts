@@ -149,6 +149,8 @@ resource "aws_cloudfront_origin_access_identity" "default" {
 
 resource "aws_s3_bucket" "default" {
   bucket = "mta-sts.${data.aws_route53_zone.default.name}"
+  # bucket only contains our generated policy file
+  force_destroy = true
 }
 
 data "aws_iam_policy_document" "default" {
