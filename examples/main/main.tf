@@ -10,5 +10,5 @@ module "mta-sts" {
   mode        = "testing"
   mx          = ["mx1.example.invalid", "mx2.example.invalid"]
   max_age     = 86400
-  rua         = "tls-rpt@example.invalid"
+  rua         = ["mailto:tls-rpt@example.invalid", "https://tls-rpt.example.invalid/"]
 }

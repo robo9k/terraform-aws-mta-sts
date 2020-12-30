@@ -48,7 +48,7 @@ resource "aws_route53_record" "tlsrpt" {
 
   # Checksum is not checked by MTA-STS clients, only used for change detection.
   # Terraform is unlikely to generate two policies with the same MD5 hash.
-  records = ["v=TLSRPTv1; rua=${var.rua}"]
+  records = ["v=TLSRPTv1; rua=${join(",", var.rua)}"]
 }
 
 # ACM certificate

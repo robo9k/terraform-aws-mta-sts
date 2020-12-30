@@ -31,5 +31,17 @@ variable "max_age" {
 
 variable "rua" {
   description = "A URI specifying the endpoint to which aggregate information about policy validation results should be sent."
-  type        = string
+  type        = list(string)
+
+  # TODO: `tlsrpt-uri` might need encoding
+
+  validation {
+    condition     = length(var.rua) != 0
+    error_message = "Must contain at least one URI."
+  }
+
+  validation {
+    condition     = can([for v in var.rua : regex("^(mailto|https):", v)])
+    error_message = "Must be a URI with 'mailto' or 'https' scheme."
+  }
 }
